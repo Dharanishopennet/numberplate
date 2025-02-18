@@ -1,0 +1,25 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.11'
+    displayName: 'Set up Python 3.11'
+
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y tesseract-ocr
+    displayName: 'Install Tesseract OCR'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install opencv-python==4.11.0 matplotlib==3.10.0 pytesseract==5.5.0 numpy
+    displayName: 'Install Python dependencies'
+
+  - script: |
+      python number_plate_detection.py
+    displayName: 'Run Number Plate Detection'
